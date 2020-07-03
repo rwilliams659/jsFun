@@ -100,11 +100,24 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = clubs.reduce((memberList, club) => {
+      club.members.forEach(member => {
+        if (memberList[member]) {
+          memberList[member].push(club.club)
+        } else {
+          memberList[member] = [club.club]; 
+        };
+      })
+      return memberList; 
+    }, {})
     return result;
 
     //Annotation:
-
+    //Reduce is good option, as we want to return an object from an array 
+    //Within reduce, for each club, we need to iterate through the members' array & add each as a key to our return object as long as it does not yet exist as a key -->  use forEach 
+    //Re the value for each key: If that key did not yet exist in the object, the value becomes an array with the current club.club string in it
+    //If that key DOES exist in the object, the current club.club string gets pushed into the current array 
+    //return object at end 
   }
 };
 
@@ -378,7 +391,7 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    cconst result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
 
     // Annotation:
