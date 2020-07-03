@@ -149,11 +149,16 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.map(mod => ({mod: mod.mod, studentsPerInstructor: mod.students/mod.instructors})); 
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // map is good option, as want a return array of same length as current array
+    //for each element in array, take current object & map to new object
+    //that new object will have same mod property: recreate with mod: mod.mod
+    //that new object will also have new property of studentsPerInstructor as key & value of (mod.students/mod.instructors)
+    //return object within callback function 
+    //at end also return object  
   }
 };
 
