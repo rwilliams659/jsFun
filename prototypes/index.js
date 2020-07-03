@@ -12,9 +12,7 @@ const { bosses, sidekicks } = require('./datasets/bosses');
 const { constellations, stars } = require('./datasets/astronomy');
 const { weapons, characters } = require('./datasets/ultima');
 const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
-
-
-
+/* eslint-disable */
 
 
 
@@ -24,24 +22,29 @@ const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 // DATASET: kitties from ./datasets/kitties
 const kittyPrompts = {
   orangeKittyNames() {
-
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties
+      .filter(kitten => kitten.color === 'orange')
+      .map(kitten => kitten.name); 
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //We only want a sub-set of the data, so use filter & test if kitty.color === 'orange' & return the kitty objects that meet that condition
+    //That will give us array of 2 objects
+    //For each kitty object, we can then use map to access name property (string); we can then return that string & we'll get a new array with just the strings
   },
 
   sortByAge() {
     // Sort the kitties by their age
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort((kitten1, kitten2) => kitten2.age - kitten1.age)
     return result;
 
-    // Annotation:
-    // Write your annotation here as a comment
+    //Annotation:
+    //We want an array of the same length as current array, so map is good option
+    //We can use sort method, which tests 2 items against each other
+    //if compare function returns > 0, item2 moved ahead of item1
+    //subtract 1st kitten's age from 2nd kitten's age to see which is larger; larger will be moved ahead in index 
   },
 
   growUp() {
@@ -57,9 +60,16 @@ const kittyPrompts = {
     //   color: 'orange'
     // },
     // ...etc]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.map(kitten => {
+      kitten.age += 2;
+      return kitten; 
+    })
     return result;
+
+    //Annotation:
+    //Map is good option since we want an array of same length as current array
+    //For each kitten, we need to increment kitten.age by 2 
+    //Then return kitten 
   }
 };
 
@@ -93,8 +103,8 @@ const clubPrompts = {
     const result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
 
-    // Annotation:
-    // Write your annotation here as a comment
+    //Annotation:
+
   }
 };
 
@@ -322,7 +332,6 @@ const bookPrompts = {
 
     // Annotation:
     // Write your annotation here as a comment
-
   },
   getNewBooks() {
     // return an array of objects containing all books that were
@@ -369,7 +378,7 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    cconst result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
 
     // Annotation:
@@ -390,7 +399,6 @@ const weatherPrompts = {
 
     // Annotation:
     // Write your annotation here as a comment
-
   }
 };
 
