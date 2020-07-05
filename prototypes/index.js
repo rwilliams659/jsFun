@@ -189,11 +189,12 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.map(cake => ({flavor: cake.cakeFlavor, inStock: cake.inStock}))
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // map seems like a good option, as we want to return an array of objects that is the same length of the original array, with different info displayed
+    //map each cake object in array to new object with key flavor, value cake.cakeFlavor & key inStock, value cake.inStock
   },
 
   onlyInStock() {
@@ -217,22 +218,25 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => cake.inStock > 0)
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // filter is best option as we want to return an array of objects that meet a particular condition
+    //filter cake array to contain objects such that cake.inStock > 0
   },
 
   totalInventory() {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((totalCakesInStock, cake) => totalCakesInStock + cake.inStock, 0)
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since we want to return a single value, reduce is a good option
+    //initial value of reduce should be 0
+    //then, for each cake, add cake.inStock to accumulator & return that value
   },
 
   allToppings() {
@@ -240,11 +244,20 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((toppingsList, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!toppingsList.includes(topping)) {
+          toppingsList.push(topping); 
+        }; 
+      });
+      return toppingsList; 
+    }, [])
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // reduce is good option since we want to return a new array not of objects, but of strings, and each string won't correspond to a particular object
+    //initial value for reduce can be empty array
+    //for each cake, within reduce, iterate over each topping in cake.toppings with forEach: if topping string is not included in array, push it to array 
   },
 
   groceryList() {
@@ -258,11 +271,24 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((groceryList, cake) => {
+      cake.toppings.forEach(topping => {
+        if (groceryList[topping] === undefined) {
+          groceryList[topping] = 1; 
+        } else {
+          groceryList[topping] += 1;
+        };
+      })
+      return groceryList; 
+    }, {})
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want to return an object from an array, so reduce is a good option, as we can initialize it with an empty object
+    // within reduce, need to access the toppings array of each cake
+    //so do cake.toppings.forEach to iterate through each topping
+    //if topping does not exist within object as a key, add it as key with value of 1 
+    //if topping DOES exist within object as a key, increment its value by 1  
   }
 };
 
