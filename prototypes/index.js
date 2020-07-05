@@ -319,11 +319,12 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter(classroom => classroom.program === 'FE'); 
     return result;
 
-    // Annotation:
-    // Write your annotation here as a comment
+    // Annotation: 
+    // filter is best option here, as want an array back that only contains the objects with property program of 'FE'
+    //filter condition: classroom.program === 'FE'
   },
 
   totalCapacities() {
@@ -334,21 +335,32 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.reduce((programCapacities, classroom) => {
+      if (classroom.program === 'FE') {
+        programCapacities.feCapacity += classroom.capacity;
+      } else {
+        programCapacities.beCapacity += classroom.capacity;
+      };
+      return programCapacities
+    }, {feCapacity: 0, beCapacity: 0})
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // reduce is good option, as only want a single object returned 
+    //initialize with object with feCapacity: 0 & beCapacity: 0
+    //then for each classroom, if program === 'FE', increment feCapacity by classroom.capacity; if program === 'BE', increment beCapacity by that value
   },
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((classroom1, classroom2) => classroom1.capacity - classroom2.capacity)
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Use sort to return an array of objects of same length, but ordered
+    //Sort condition: if a - b is negative, a sorted ahead of b 
+    // condition to test: b.capacity - a.capacity 
   }
 };
 
