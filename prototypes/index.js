@@ -383,25 +383,38 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.reduce((nonviolentBookList, book) => {
+      if (book.genre !== 'Horror' && book.genre !== 'True Crime') {
+        nonviolentBookList.push(book.title)
+      };
+      return nonviolentBookList; 
+    }, [])
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // start with array of objects, want array of strings back
+    //since returned array will be different length than original array, map is not good option
+    //can use reduce, initializing with empty array
+    //for each book, test if book.genre !== 'Horror' && book.genre !== 'True Crime'
+    //if those conditions are true, push book.title string into array 
   },
   getNewBooks() {
     // return an array of objects containing all books that were
-    // published in the 90's and 00's. Inlucde the title and the year Eg:
+    // published in the 90's and 00's. Include the title and the year Eg:
 
     // [{ title: 'Harry Potter and the Sorcerer\'s Stone', year: 1997 },
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books
+    .filter(book => book.published > 1989 && book.published < 2010)
+    .map(book => ({title: book.title, year: book.published}))
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // First, filter books to only include those published between 1990 & 2009
+    //filter test condition: book.published > 1989 && book.published < 2010
+    //then need to map each remaining object to a different object with key title, value book.title & key year, value book.published 
   }
 
 };
@@ -420,11 +433,12 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.map(forecast => (forecast.temperature.high + forecast.temperature.low)/2)
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //take in an array of 10 objects, get back array of 10 strings, so map seems like a good option since return array is same length
+    //for each forecast item, get average temperature by (forecast.temperature.high + forecast.temperature.low)/2 & return that value 
   },
 
   findSunnySpots() {
@@ -434,11 +448,15 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather
+    .filter(forecast => forecast.type === 'sunny' || forecast.type === 'mostly sunny')
+    .map(forecast => `${forecast.location} is ${forecast.type}.`);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since only want to access forecasts with a type of sunny or mostly sunny, use filter to get new array with just those forecast objects
+    //then map each of those objects to a sentence
+    //sentence for each will use interpolation: `${forecast.location} is ${forecast.type}.`
   },
 
   findHighestHumidity() {
@@ -450,11 +468,19 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.reduce((mostHumidForecast, forecast) => {
+      if (forecast.humidity > mostHumidForecast.humidity) {
+        mostHumidForecast = forecast; 
+      };
+      return mostHumidForecast; 
+    })
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // reduce might work since want to get single element back from array of 10 elements
+    //don't want to use initial value
+    //instead, acc will be assigned to first object, and curr element will be 2nd object on first pass
+    //then can compare forecast.humidity for each of the elements, and reassign the accumulator to the object with higher humidity
   }
 };
 
