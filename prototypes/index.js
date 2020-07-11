@@ -502,11 +502,25 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((parksLists, park) => {
+      if (park.visited === true) {
+        parksLists.parksVisited.push(park.name);
+      } else {
+        parksLists.parksToVisit.push(park.name)
+      };
+      return parksLists; 
+    }, {parksToVisit: [], parksVisited: []})
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Return value: 2 arrays placed in object
+    //use reduce: initialize object {parksToVisit: [], parksVisited: []}
+    //iterate over nationalParks with reduce defined above
+    //for each park, check the park.visited property
+    //if visited === true, push park.name into parksVisited array: parksVisited.push
+    //if visited === false, push park.name into parksToVisit array: parksToVisit.push()
+    //during each iteration, return object
+    //at end return final object 
   },
 
   getParkInEachState() {
@@ -519,11 +533,15 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.map(park => ({[park.location]: park.name}));
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // output: array of objects 
+    //map is good option because want same data structure of same length
+    //use map to iterate over nationalParks
+    //for each park, map object to new object {}
+    //in that object, key value pair is park.location: park.name
   },
 
   getParkActivities() {
@@ -542,11 +560,22 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((activitiesList, park) => {
+      park.activities.forEach(activity => {
+        if (!activitiesList.includes(activity)) {
+          activitiesList.push(activity); 
+        };
+      });
+      return activitiesList; 
+    }, []); 
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // output: array 
+    //iterate through nationalParks: use reduce, initialized at []
+    //for each park, access activities array
+    //iterate through that array & push into to NEW array if it isn't already there
+
   }
 };
 
@@ -569,11 +598,17 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((beerCount, brewery) => beerCount + brewery.beers.length, 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // output: total beer count
+    //input: array of brewery objects
+    //reduce is good choice - 
+    //initialize total beer count at 0, then add to total beers.length 
+    //return total beer count
+
+    //could use map to create array to return brewery.beers.length for each brewery
   },
 
   getBreweryBeerCount() {
@@ -775,11 +810,20 @@ const astronomyPrompts = {
     //     color: 'red' }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.reduce((matchingStars, star) => {
+      Object.keys(constellations).forEach(constellation => {
+        let matchingStar = constellation.stars.find(constellationStar => star === constellationStar);
+      });
+      matchingStars.push(matchingStar)
+    }, [])
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Loop through stars array of objects
+    //For each star, loop through constellations object of objects
+    //For each constellation, access consellation.stars array and for each constellationStar, test if the original star matches that star
+    //If star matches constellationSTar, add it to a results array 
+    //Start with reduce so can initialize an empty array to add matching stars into 
   },
 
   starsByColor() {
