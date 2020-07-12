@@ -1,3 +1,4 @@
+/* eslint-disable */
 const context = {
   exerciseA() {
     const fly = () => {
@@ -16,11 +17,14 @@ const context = {
 
 
     // What is the value of `this` when we call ship.fly()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object'
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Fly is an arrow function, meaning the context of this is bound upon declaration, so its console.log(this) will refer to the global window object 
+    //ship instantiates a new SpaceProbe object, which has a fly property with a value of the fly function
+    //So when we call ship.fly(), ship is the owner of the fly method, and our 'this' context is ship
+    //however, as 'this' in the fly method was bound at the function's declaration, 'this' will still refer to the global window object
   },
 
   exerciseB() {
@@ -30,11 +34,12 @@ const context = {
     }
 
     // What is the value of `this` when we call fn()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object'
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // fn function is defined with ES5 notation, so the value of this within it is defined at invocation
+    //So if we call fn(), the 'this' definition is set, and it will be the global window object, because we aren't invoking the function as a method of an object or inside a constructor function
   },
 
   exerciseC() {
@@ -49,11 +54,14 @@ const context = {
     el.addEventListener('click', car.getInfo);
 
     // What is the value of `this` when a user clicks on our element and car.getInfo() is triggered?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'el'
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // car is an object literal, so if we execute method on that object, car is 'this'
+    //getInfo method is defined with es5 notation, meaning its 'this' context is defined at invocation
+    //when we invoke addEventListener on el, el is the owner of that method, so the value of 'this' is el
+    //therefore, when that triggers car.getInfo, it's this context gets defined at invocation as the current context of el 
   },
 
   exerciseD() {
@@ -72,11 +80,13 @@ const context = {
     var breed = dog.getBreed();
 
     // What is the value of `this` when we call breed()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object'
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // breed de-references getBreed, removing it from its context of the dog object
+    //therefore breed has a 'this' context of the global window object
+    //since getBreed is defined with ES5 notation, its 'this' context is defined at invocation, meaning it takes on the 'this' value of the global window object 
   },
 
   exerciseE() {
