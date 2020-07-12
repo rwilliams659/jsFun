@@ -620,11 +620,14 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.map(brewery =>
+      ({name: brewery.name, beerCount: brewery.beers.length}))
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // output: array of objects with name & beerCount properties 
+    //use map since input type & length is same as output
+    //map each brewery to an object with key-value pair name: brewery.name & beerCount: brewery.beers.length
   },
 
   findHighestAbvBeer() {
@@ -632,11 +635,25 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 
+    breweries.reduce((highestABVBeer, brewery) => {
+      brewery.beers.forEach(beer => {
+        if (beer.abv > highestABVBeer.abv) {
+          highestABVBeer = beer; 
+        };
+      });
+      return highestABVBeer; 
+    }, { name: 'B.B. Rodriguez', type: 'Coffee Double Brown', abv: 8, ibu: 30, });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //ultimately we want one object as return value, so reduce is good option
+    //set up reduce with an initial value of the first beer object
+    //For reduce, iterate through each brewery 
+    //within reduce, iterate through each brewery.beers array with for each
+    //within foreach, test if the current beer's abv is higher than the stored beer's abv
+    //if so, replace the stored beer with the current beer
+    //return that beer 
   }
 };
 
