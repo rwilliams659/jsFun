@@ -697,11 +697,22 @@ const turingPrompts = {
     //  { name: 'Robbie', studentCount: 18 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.map(instructor => {
+      let studentCount = cohorts.find(cohort => cohort.module === instructor.module).studentCount;
+      return ({name: instructor.name, studentCount: studentCount})
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // instructors: map to iterate over each object 
+    //for each instructor, create object with 2 properties:
+    //cohorts & instructors linked by module property
+    //for studentCount value, iterate over cohorts with find
+    //find cohort where module === instructor.module 
+    //within object found, get studentCount property
+    //put that value into key studentCount value 
+    //key name, value instructor.name
+    //key studentCount will need to come from cohorts 
   },
 
   studentsPerInstructor() {
@@ -711,11 +722,34 @@ const turingPrompts = {
     // cohort1804: 10.5
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cohorts.reduce((studentsPerTeacher, cohort) => {
+      let instructorCount = instructors.reduce((instructorCount, instructor) => {
+        if (cohort.module === instructor.module) {
+          instructorCount ++
+        };
+        return instructorCount; 
+      }, 0);
+      let studentTeacherRatio = cohort.studentCount / instructorCount; 
+      studentsPerTeacher[`cohort${cohort.cohort}`] = studentTeacherRatio;
+      return studentsPerTeacher; 
+    }, {})
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // use reduce because we want a single object back
+    // need to calculate students per teacher:
+    // access studentCount property for each module
+    // also get # of instructors for each module 
+
+    // use reduce on cohorts
+    // initialize with empty object
+    // for each cohort, we'll add property
+    // property key is `cohort${cohort.cohort}` or [] notation?
+    // property value: 
+    // iterate over instructors to find how many have module property that matches cohort.module: reduce initialized at 0
+    // for Each instructor, if modules match, increment acc by 1 
+    //then we have # of instructors, so calculate students per teacher by cohort.studentCount/acc 
+    //return FIRST acc 
   },
 
   modulesPerTeacher() {
@@ -733,11 +767,35 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((instructorModules, instructor) => {
+      let targetModules = cohorts.reduce((modules, cohort) => {
+        cohort.curriculum.forEach(subject => {
+          if (instructor.teaches.includes(subject)) {
+            if (!modules.includes(cohort.module)) {
+              modules.push(cohort.module);
+            }
+          }
+        })
+        return modules; 
+      }, []);
+      instructorModules[instructor.name] = targetModules; 
+      return instructorModules;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Output: single object; call reduce on instructors
+    //initialize with {}
+    //for each instructor, iterate over cohorts array
+    //iterate over cohorts with reduce, intialized with []
+    //for each cohort, access curriculum array
+    //for each subject in curriculum, test if the instructor.teaches array includes it
+    //if it does, make sure it's not already in the array, and if not, push it in
+    //in inner reduce, make sure to return accumulator
+    //once inner reduce has returned a value, assign it to a variable targetModules
+    //for outer reduce, add a property with key of instructor.name & value targetModules
+    //return accumulator
+
   },
 
   curriculumPerTeacher() {
@@ -750,11 +808,27 @@ const turingPrompts = {
     //   recursion: [ 'Pam', 'Leta' ]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((instructorSubjects, instructor) => {
+      instructor.teaches.forEach(subject => {
+        if (!instructorSubjects[subject]) {
+          instructorSubjects[subject] = [instructor.name]
+        } else {
+          instructorSubjects[subject].push(instructor.name)
+        }
+      });
+      return instructorSubjects; 
+    }, {})
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // want single object back, so reduce is good option
+    // use reduce with instructors
+    // initialize with empty object
+    // for each instructor, access instructor.teaches
+    // for each subject in array, if it is not a key name in our object:
+    // add it as key name, with value of array with current instructor.name
+    // if subject is already a key name, add the current instructor.name to that key's array value 
+    // return acc for each iteration
   }
 };
 
