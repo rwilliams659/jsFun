@@ -859,11 +859,38 @@ const bossPrompts = {
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+    const bossValues = Object.values(bosses);
+    const result = bossValues.reduce((bossLoyalty, boss) => {
+      let sum = sidekicks.reduce((totalLoyalty, sidekick) => {
+        if (sidekick.boss === boss.name) {
+          totalLoyalty += sidekick.loyaltyToBoss
+        };
+        return totalLoyalty; 
+      }, 0);
+      bossLoyalty.push({bossName: boss.name, sidekickLoyalty: sum});
+      return bossLoyalty; 
+    }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //output: array of objects
+    //need access to each boss object's name property
+    //and each sidekick's loyaltyToBoss property  
+
+    //first, get array of Object.values(bosses) = bossValues
+    //use reduce initialized with [] on bossValues
+    
+    //to get that sum from above, iterate over sidekicks with reduce initialized at 0 
+    //for each sidekick, if sidekick.boss property matches the boss.name, increment acc by .loyaltyToBoss amount
+    //save sum
+
+    //for each boss, create an object
+    //within that object, 1st property: bossName: boss.name
+    //2nd property: sidekickLoyalty: sum
+   
+    //in outside reduce function, return acc 
+ 
   }
 };
 
